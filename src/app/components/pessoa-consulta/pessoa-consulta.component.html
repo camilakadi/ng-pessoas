@@ -1,0 +1,112 @@
+<div class="container">
+  <mat-card class="consulta-card">
+    <app-form-header
+      icon="search"
+      title="Consulta de Pessoa"
+      subtitle="Digite o CPF para buscar uma pessoa cadastrada"
+    >
+    </app-form-header>
+
+    <mat-card-content>
+      <form
+        [formGroup]="consultaForm"
+        (ngSubmit)="onSubmit()"
+        class="form-container"
+      >
+        <!-- Campo CPF para consulta -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>CPF</mat-label>
+          <input
+            matInput
+            formControlName="cpf"
+            placeholder="000.000.000-00"
+            maxlength="14"
+            (input)="formatCPF($event)"
+            required
+          />
+          <mat-icon matSuffix>badge</mat-icon>
+          <mat-error
+            *ngIf="
+              consultaForm.get('cpf')?.hasError('required') &&
+              consultaForm.get('cpf')?.touched
+            "
+          >
+            CPF é obrigatório
+          </mat-error>
+          <mat-error
+            *ngIf="
+              consultaForm.get('cpf')?.hasError('pattern') &&
+              consultaForm.get('cpf')?.touched
+            "
+          >
+            CPF deve estar no formato 000.000.000-00
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Botões -->
+        <div class="button-container">
+          <button mat-stroked-button type="button" (click)="resetForm()">
+            <mat-icon>clear</mat-icon>
+            Limpar
+          </button>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="consultaForm.invalid"
+          >
+            <mat-icon>search</mat-icon>
+            Buscar
+          </button>
+
+          <button
+            mat-raised-button
+            color="accent"
+            type="button"
+            routerLink="/cadastro"
+          >
+            <mat-icon>person_add</mat-icon>
+            Novo Cadastro
+          </button>
+        </div>
+      </form>
+
+      <!-- Resultado da consulta -->
+      <div *ngIf="pessoaEncontrada" class="resultado-container">
+        <mat-divider></mat-divider>
+        <h3>Dados da Pessoa</h3>
+        <mat-card class="resultado-card">
+          <mat-card-content>
+            <div class="dados-pessoa">
+              <div class="campo">
+                <strong>Nome:</strong> {{ pessoaEncontrada.nome }}
+              </div>
+              <div class="campo">
+                <strong>CPF:</strong> {{ pessoaEncontrada.cpf }}
+              </div>
+              <div class="campo">
+                <strong>Sexo:</strong> {{ getSexoLabel(pessoaEncontrada.sexo) }}
+              </div>
+              <div class="campo">
+                <strong>E-mail:</strong> {{ pessoaEncontrada.email }}
+              </div>
+              <div class="campo">
+                <strong>Telefone:</strong> {{ pessoaEncontrada.telefone }}
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Mensagem de erro -->
+      <div *ngIf="erroConsulta" class="erro-container">
+        <mat-divider></mat-divider>
+        <mat-error>
+          <mat-icon>error</mat-icon>
+          {{ erroConsulta }}
+        </mat-error>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

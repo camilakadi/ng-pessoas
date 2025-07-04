@@ -1,0 +1,135 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.consulta-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.button-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.button-container button {
+  min-width: 120px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.button-container button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.resultado-container {
+  margin-top: 30px;
+}
+
+.resultado-container h3 {
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.resultado-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.dados-pessoa {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.campo {
+  padding: 8px 0;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.campo:last-child {
+  border-bottom: none;
+}
+
+.campo strong {
+  color: #495057;
+  font-weight: 600;
+  min-width: 80px;
+}
+
+.erro-container {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.erro-container mat-error {
+  color: #721c24;
+  font-weight: 500;
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .consulta-card {
+    margin: 10px;
+  }
+
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button-container button {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .campo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}

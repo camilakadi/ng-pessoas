@@ -12,6 +12,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { RouterModule } from '@angular/router';
+import { PessoaService } from '../../services/pessoa.service';
+import { FormHeaderComponent } from '../form-header/form-header.component';
 
 @Component({
   selector: 'app-pessoa-form',
@@ -25,6 +28,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    RouterModule,
+    FormHeaderComponent,
   ],
   templateUrl: './pessoa-form.component.html',
   styleUrl: './pessoa-form.component.scss',
@@ -39,7 +44,7 @@ export class PessoaFormComponent implements OnInit {
     { value: 'O', label: 'Outro' },
   ];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private pessoaService: PessoaService) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -75,10 +80,23 @@ export class PessoaFormComponent implements OnInit {
     this.submitted = true;
 
     if (this.pessoaForm.valid) {
-      console.log('Formulário válido:', this.pessoaForm.value);
-      // Aqui você pode enviar os dados para uma API
-      alert('Formulário enviado com sucesso!');
-      this.resetForm();
+      const novaPessoa = {
+        ...this.pessoaForm.value,
+        dataCadastro: new Date(),
+        ativo: true,
+      };
+
+      this.pessoaService.criar(novaPessoa).subscribe({
+        next: (pessoa) => {
+          console.log('Pessoa criada com sucesso:', pessoa);
+          alert('Pessoa cadastrada com sucesso!');
+          this.resetForm();
+        },
+        error: (error) => {
+          console.error('Erro ao criar pessoa:', error);
+          alert('Erro ao cadastrar pessoa. Tente novamente.');
+        },
+      });
     } else {
       console.log('Formulário inválido:', this.pessoaForm.errors);
       this.markFormGroupTouched();

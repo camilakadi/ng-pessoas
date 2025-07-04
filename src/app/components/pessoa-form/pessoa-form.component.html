@@ -1,14 +1,11 @@
 <div class="container">
   <mat-card class="form-card">
-    <mat-card-header>
-      <mat-card-title>
-        <mat-icon>person_add</mat-icon>
-        Cadastro de Pessoa
-      </mat-card-title>
-      <mat-card-subtitle>
-        Preencha os dados abaixo para cadastrar uma nova pessoa
-      </mat-card-subtitle>
-    </mat-card-header>
+    <app-form-header
+      icon="person_add"
+      title="Cadastro de Pessoa"
+      subtitle="Preencha os dados abaixo para cadastrar uma nova pessoa"
+    >
+    </app-form-header>
 
     <mat-card-content>
       <form
@@ -167,6 +164,11 @@
 
         <!-- Botões -->
         <div class="button-container">
+          <button mat-stroked-button type="button" routerLink="/">
+            <mat-icon>arrow_back</mat-icon>
+            Voltar
+          </button>
+
           <button mat-stroked-button type="button" (click)="resetForm()">
             <mat-icon>clear</mat-icon>
             Limpar
