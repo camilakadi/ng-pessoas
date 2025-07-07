@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  min-height: 100vh;
+  min-height: calc(100vh - 40px);
   padding: 20px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
@@ -24,6 +24,10 @@
   margin-top: 20px;
 }
 
+.cpf-icon {
+  color: #666;
+}
+
 .full-width {
   width: 100%;
 }
@@ -34,30 +38,30 @@
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 20px;
-}
 
-.button-container button {
-  min-width: 120px;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
+  button {
+    min-width: 120px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
 
-.button-container button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
 }
 
 .resultado-container {
   margin-top: 30px;
-}
 
-.resultado-container h3 {
-  color: #333;
-  margin-bottom: 16px;
-  font-weight: 600;
-  text-align: center;
+  h3 {
+    color: #333;
+    margin-bottom: 16px;
+    font-weight: 600;
+    text-align: center;
+  }
 }
 
 .resultado-card {
@@ -79,16 +83,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
 
-.campo:last-child {
-  border-bottom: none;
-}
+  &:last-child {
+    border-bottom: none;
+  }
 
-.campo strong {
-  color: #495057;
-  font-weight: 600;
-  min-width: 80px;
+  strong {
+    color: #495057;
+    font-weight: 600;
+    min-width: 80px;
+  }
 }
 
 .erro-container {
@@ -100,11 +104,11 @@
   display: flex;
   align-items: center;
   gap: 8px;
-}
 
-.erro-container mat-error {
-  color: #721c24;
-  font-weight: 500;
+  mat-error {
+    color: #721c24;
+    font-weight: 500;
+  }
 }
 
 // Responsividade
@@ -120,11 +124,11 @@
   .button-container {
     flex-direction: column;
     align-items: center;
-  }
 
-  .button-container button {
-    width: 100%;
-    max-width: 200px;
+    button {
+      width: 100%;
+      max-width: 200px;
+    }
   }
 
   .campo {

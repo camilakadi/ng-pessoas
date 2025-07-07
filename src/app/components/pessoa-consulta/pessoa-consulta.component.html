@@ -24,7 +24,7 @@
             (input)="formatCPF($event)"
             required
           />
-          <mat-icon matSuffix>badge</mat-icon>
+          <mat-icon matSuffix class="cpf-icon">badge</mat-icon>
           <mat-error
             *ngIf="
               consultaForm.get('cpf')?.hasError('required') &&
