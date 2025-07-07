@@ -73,6 +73,7 @@ export class PessoaFormModalComponent {
           Validators.required,
           Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/),
         ],
+        [this.pessoaService.cpfUnicoValidator()],
       ],
       sexo: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -148,6 +149,9 @@ export class PessoaFormModalComponent {
       if (field === 'telefone') {
         return 'Telefone deve estar no formato (00) 00000-0000';
       }
+    }
+    if (control?.hasError('cpfJaExiste')) {
+      return 'CPF já cadastrado no sistema';
     }
     return '';
   }

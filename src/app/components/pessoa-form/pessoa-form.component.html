@@ -78,6 +78,14 @@
           >
             {{ getErrorMessage("cpf") }}
           </mat-error>
+          <mat-error
+            *ngIf="
+              pessoaForm.get('cpf')?.hasError('cpfJaExiste') &&
+              pessoaForm.get('cpf')?.touched
+            "
+          >
+            {{ getErrorMessage("cpf") }}
+          </mat-error>
         </mat-form-field>
 
         <!-- Campo Sexo -->
