@@ -1,0 +1,193 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h2 mat-dialog-title>
+      <mat-icon>person_add</mat-icon>
+      Cadastro de Pessoa
+    </h2>
+    <button mat-icon-button (click)="onCancel()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content class="modal-content">
+    <p class="subtitle">
+      Preencha os dados abaixo para cadastrar uma nova pessoa
+    </p>
+
+    <form
+      [formGroup]="pessoaForm"
+      (ngSubmit)="onSubmit()"
+      class="form-container"
+    >
+      <!-- Campo Nome -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nome Completo</mat-label>
+        <input
+          matInput
+          formControlName="nome"
+          placeholder="Digite seu nome completo"
+          maxlength="100"
+          required
+        />
+        <mat-icon matSuffix>person</mat-icon>
+        <mat-error
+          *ngIf="
+            pessoaForm.get('nome')?.hasError('required') &&
+            pessoaForm.get('nome')?.touched
+          "
+        >
+          {{ getErrorMessage("nome") }}
+        </mat-error>
+        <mat-error
+          *ngIf="
+            pessoaForm.get('nome')?.hasError('minlength') &&
+            pessoaForm.get('nome')?.touched
+          "
+        >
+          {{ getErrorMessage("nome") }}
+        </mat-error>
+        <mat-error
+          *ngIf="
+            pessoaForm.get('nome')?.hasError('maxlength') &&
+            pessoaForm.get('nome')?.touched
+          "
+        >
+          {{ getErrorMessage("nome") }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Campo CPF -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>CPF</mat-label>
+        <input
+          matInput
+          formControlName="cpf"
+          placeholder="000.000.000-00"
+          maxlength="14"
+          (input)="formatCPF($event)"
+          required
+        />
+        <mat-icon matSuffix>badge</mat-icon>
+        <mat-error
+          *ngIf="
+            pessoaForm.get('cpf')?.hasError('required') &&
+            pessoaForm.get('cpf')?.touched
+          "
+        >
+          {{ getErrorMessage("cpf") }}
+        </mat-error>
+        <mat-error
+          *ngIf="
+            pessoaForm.get('cpf')?.hasError('pattern') &&
+            pessoaForm.get('cpf')?.touched
+          "
+        >
+          {{ getErrorMessage("cpf") }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Campo Sexo -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Sexo</mat-label>
+        <mat-select formControlName="sexo" required>
+          <mat-option value="">Selecione o sexo</mat-option>
+          <mat-option *ngFor="let option of sexoOptions" [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>wc</mat-icon>
+        <mat-error
+          *ngIf="
+            pessoaForm.get('sexo')?.hasError('required') &&
+            pessoaForm.get('sexo')?.touched
+          "
+        >
+          {{ getErrorMessage("sexo") }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Campo E-mail -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>E-mail</mat-label>
+        <input
+          matInput
+          formControlName="email"
+          placeholder="seu@email.com"
+          type="email"
+          required
+        />
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error
+          *ngIf="
+            pessoaForm.get('email')?.hasError('required') &&
+            pessoaForm.get('email')?.touched
+          "
+        >
+          {{ getErrorMessage("email") }}
+        </mat-error>
+        <mat-error
+          *ngIf="
+            pessoaForm.get('email')?.hasError('email') &&
+            pessoaForm.get('email')?.touched
+          "
+        >
+          {{ getErrorMessage("email") }}
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Campo Telefone -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Telefone</mat-label>
+        <input
+          matInput
+          formControlName="telefone"
+          placeholder="(00) 00000-0000"
+          maxlength="15"
+          (input)="formatPhone($event)"
+          required
+        />
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-error
+          *ngIf="
+            pessoaForm.get('telefone')?.hasError('required') &&
+            pessoaForm.get('telefone')?.touched
+          "
+        >
+          {{ getErrorMessage("telefone") }}
+        </mat-error>
+        <mat-error
+          *ngIf="
+            pessoaForm.get('telefone')?.hasError('pattern') &&
+            pessoaForm.get('telefone')?.touched
+          "
+        >
+          {{ getErrorMessage("telefone") }}
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="modal-actions">
+    <button mat-stroked-button type="button" (click)="resetForm()">
+      <mat-icon>clear</mat-icon>
+      Limpar
+    </button>
+
+    <button mat-stroked-button type="button" (click)="onCancel()">
+      <mat-icon>cancel</mat-icon>
+      Cancelar
+    </button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="button"
+      (click)="onSubmit()"
+      [disabled]="pessoaForm.invalid || loading"
+    >
+      <mat-icon>save</mat-icon>
+      <span *ngIf="!loading">Cadastrar</span>
+      <span *ngIf="loading">Cadastrando...</span>
+    </button>
+  </mat-dialog-actions>
+</div>

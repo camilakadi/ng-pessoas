@@ -8,15 +8,18 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { Pessoa } from '../../models/pessoa.model';
 import { PessoaService } from '../../services/pessoa.service';
 import { FormHeaderComponent } from '../form-header/form-header.component';
+import { PessoaFormModalComponent } from '../pessoa-form-modal/pessoa-form-modal.component';
 
 @Component({
   selector: 'app-pessoa-consulta',
@@ -31,6 +34,7 @@ import { FormHeaderComponent } from '../form-header/form-header.component';
     MatIconModule,
     MatSelectModule,
     MatDividerModule,
+    MatDialogModule,
     RouterModule,
     FormHeaderComponent,
   ],
@@ -48,7 +52,12 @@ export class PessoaConsultaComponent implements OnInit {
     { value: 'F', label: 'Feminino' },
   ];
 
-  constructor(private fb: FormBuilder, private pessoaService: PessoaService) {}
+  constructor(
+    private fb: FormBuilder,
+    private pessoaService: PessoaService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.initForm();
@@ -118,5 +127,28 @@ export class PessoaConsultaComponent implements OnInit {
   getSexoLabel(sexo: string): string {
     const option = this.sexoOptions.find((opt) => opt.value === sexo);
     return option ? option.label : sexo;
+  }
+
+  abrirModalCadastro(): void {
+    const dialogRef = this.dialog.open(PessoaFormModalComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      disableClose: false,
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.success) {
+        this.snackBar.open(
+          `Pessoa ${result.pessoa.nome} com CPF ${result.pessoa.cpf} cadastrada com sucesso.`,
+          'Fechar',
+          {
+            duration: 5000,
+          }
+        );
+
+        this.resetForm();
+      }
+    });
   }
 }
