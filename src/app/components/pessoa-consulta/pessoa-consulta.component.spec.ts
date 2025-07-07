@@ -172,6 +172,7 @@ describe('PessoaConsultaComponent', () => {
   it('should return correct sexo label', () => {
     expect(component.getSexoLabel('M')).toBe('Masculino');
     expect(component.getSexoLabel('F')).toBe('Feminino');
+    expect(component.getSexoLabel('O')).toBe('Outro');
     expect(component.getSexoLabel('X')).toBe('X'); // Valor não encontrado
   });
 
@@ -179,6 +180,7 @@ describe('PessoaConsultaComponent', () => {
     expect(component.sexoOptions).toEqual([
       { value: 'M', label: 'Masculino' },
       { value: 'F', label: 'Feminino' },
+      { value: 'O', label: 'Outro' },
     ]);
   });
 

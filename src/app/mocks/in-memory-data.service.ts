@@ -108,6 +108,16 @@ export class InMemoryDataService implements InMemoryDbService {
         dataCadastro: new Date('2024-03-20'),
         ativo: true,
       },
+      {
+        id: 11,
+        nome: 'Alex Santos Silva',
+        cpf: '159.357.486-00',
+        sexo: 'O',
+        email: 'alex.santos@email.com',
+        telefone: '(11) 12345-6789',
+        dataCadastro: new Date('2024-03-25'),
+        ativo: true,
+      },
     ];
 
     return { pessoas };
