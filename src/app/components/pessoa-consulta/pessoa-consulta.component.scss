@@ -57,24 +57,18 @@
   margin-top: 30px;
 
   h3 {
-    color: #333;
+    color: #444;
     margin-bottom: 16px;
     font-weight: 600;
     text-align: center;
   }
 }
 
-.resultado-card {
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  margin-top: 16px;
-}
-
 .dados-pessoa {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-top: 16px;
 }
 
 .campo {
@@ -89,26 +83,30 @@
   }
 
   strong {
-    color: #495057;
+    color: #444;
     font-weight: 600;
     min-width: 80px;
   }
 }
 
 .erro-container {
-  margin-top: 20px;
-  padding: 16px;
-  background: #f8d7da;
-  border: 1px solid #f5c6cb;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  margin-top: 30px;
 
   mat-error {
     color: #721c24;
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
   }
+}
+
+.divider {
+  margin-bottom: 20px;
 }
 
 // Responsividade

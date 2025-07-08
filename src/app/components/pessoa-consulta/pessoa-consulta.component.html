@@ -68,37 +68,34 @@
 
       <!-- Resultado da consulta -->
       <div *ngIf="pessoaEncontrada" class="resultado-container">
-        <mat-divider></mat-divider>
+        <mat-divider class="divider"></mat-divider>
         <h3>Dados da Pessoa</h3>
-        <mat-card class="resultado-card">
-          <mat-card-content>
-            <div class="dados-pessoa">
-              <div class="campo">
-                <strong>Nome:</strong> {{ pessoaEncontrada.nome }}
-              </div>
-              <div class="campo">
-                <strong>CPF:</strong> {{ pessoaEncontrada.cpf }}
-              </div>
-              <div class="campo">
-                <strong>Sexo:</strong> {{ getSexoLabel(pessoaEncontrada.sexo) }}
-              </div>
-              <div class="campo">
-                <strong>E-mail:</strong> {{ pessoaEncontrada.email }}
-              </div>
-              <div class="campo">
-                <strong>Telefone:</strong> {{ pessoaEncontrada.telefone }}
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
+
+        <div class="dados-pessoa">
+          <div class="campo">
+            <strong>Nome:</strong> {{ pessoaEncontrada.nome }}
+          </div>
+          <div class="campo">
+            <strong>CPF:</strong> {{ pessoaEncontrada.cpf }}
+          </div>
+          <div class="campo">
+            <strong>Sexo:</strong> {{ getSexoLabel(pessoaEncontrada.sexo) }}
+          </div>
+          <div class="campo">
+            <strong>E-mail:</strong> {{ pessoaEncontrada.email }}
+          </div>
+          <div class="campo">
+            <strong>Telefone:</strong> {{ pessoaEncontrada.telefone }}
+          </div>
+        </div>
       </div>
 
       <!-- Mensagem de erro -->
       <div *ngIf="erroConsulta" class="erro-container">
-        <mat-divider></mat-divider>
+        <mat-divider class="divider"></mat-divider>
         <mat-error>
           <mat-icon>error</mat-icon>
-          {{ erroConsulta }}
+          <div>{{ erroConsulta }}</div>
         </mat-error>
       </div>
     </mat-card-content>
