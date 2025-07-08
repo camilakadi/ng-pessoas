@@ -354,7 +354,7 @@ describe('PessoaConsultaComponent', () => {
       const cpfControl = component.consultaForm.get('cpf');
       cpfControl?.markAsTouched();
 
-      expect(component.getCPFErrorMessage()).toBe('CPF é obrigatório');
+      expect(component.getErrorMessage('cpf')).toBe('CPF é obrigatório');
     });
 
     it('should return correct error message for pattern error', () => {
@@ -362,7 +362,7 @@ describe('PessoaConsultaComponent', () => {
       cpfControl?.setValue('12345678901');
       cpfControl?.markAsTouched();
 
-      expect(component.getCPFErrorMessage()).toBe(
+      expect(component.getErrorMessage('cpf')).toBe(
         'CPF deve estar no formato 000.000.000-00'
       );
     });
@@ -372,7 +372,7 @@ describe('PessoaConsultaComponent', () => {
       cpfControl?.setErrors({ cpfInvalido: true });
       cpfControl?.markAsTouched();
 
-      expect(component.getCPFErrorMessage()).toBe('CPF inválido');
+      expect(component.getErrorMessage('cpf')).toBe('CPF inválido');
     });
 
     it('should return empty string when no errors', () => {
@@ -380,7 +380,7 @@ describe('PessoaConsultaComponent', () => {
       cpfControl?.setValue('529.982.247-25');
       cpfControl?.markAsTouched();
 
-      expect(component.getCPFErrorMessage()).toBe('');
+      expect(component.getErrorMessage('cpf')).toBe('');
     });
   });
 

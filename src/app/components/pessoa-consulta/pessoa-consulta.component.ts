@@ -97,8 +97,6 @@ export class PessoaConsultaComponent implements OnInit {
 
     if (this.consultaForm.valid) {
       const cpf = this.consultaForm.get('cpf')?.value;
-
-      // Buscar pessoa usando o serviço
       this.buscarPessoaPorCPF(cpf);
     }
   }
