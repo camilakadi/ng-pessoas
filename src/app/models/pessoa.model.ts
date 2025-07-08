@@ -5,6 +5,4 @@ export interface Pessoa {
   sexo: 'M' | 'F' | 'O';
   email: string;
   telefone: string;
-  dataCadastro: Date;
-  ativo: boolean;
 }

@@ -26,13 +26,11 @@ describe('PessoaConsultaComponent', () => {
 
   const mockPessoa: Pessoa = {
     id: 1,
-    nome: 'João Silva',
+    nome: 'Camila Kadi',
     cpf: '123.456.789-01',
-    sexo: 'M',
-    email: 'joao@email.com',
+    sexo: 'F',
+    email: 'camila.kadi@email.com',
     telefone: '(11) 99999-9999',
-    dataCadastro: new Date(),
-    ativo: true,
   };
 
   beforeEach(async () => {
@@ -231,10 +229,10 @@ describe('PessoaConsultaComponent', () => {
     const resultadoContainer = compiled.querySelector('.resultado-container');
 
     expect(resultadoContainer).toBeTruthy();
-    expect(compiled.textContent).toContain('João Silva');
+    expect(compiled.textContent).toContain('Camila Kadi');
     expect(compiled.textContent).toContain('123.456.789-01');
-    expect(compiled.textContent).toContain('Masculino');
-    expect(compiled.textContent).toContain('joao@email.com');
+    expect(compiled.textContent).toContain('Feminino');
+    expect(compiled.textContent).toContain('camila.kadi@email.com');
     expect(compiled.textContent).toContain('(11) 99999-9999');
   });
 

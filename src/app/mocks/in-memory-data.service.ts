@@ -10,23 +10,19 @@ export class InMemoryDataService implements InMemoryDbService {
     const pessoas: Pessoa[] = [
       {
         id: 1,
-        nome: 'João Silva Santos',
+        nome: 'Camila Kadi',
         cpf: '123.456.789-00',
-        sexo: 'M',
-        email: 'joao.silva@email.com',
+        sexo: 'F',
+        email: 'camila.kadi@email.com',
         telefone: '(11) 99999-9999',
-        dataCadastro: new Date('2024-01-15'),
-        ativo: true,
       },
       {
         id: 2,
-        nome: 'Maria Oliveira Costa',
+        nome: 'Matheus Moreira',
         cpf: '987.654.321-00',
-        sexo: 'F',
-        email: 'maria.oliveira@email.com',
+        sexo: 'M',
+        email: 'matheus.moreira@email.com',
         telefone: '(11) 88888-8888',
-        dataCadastro: new Date('2024-01-20'),
-        ativo: true,
       },
       {
         id: 3,
@@ -35,8 +31,6 @@ export class InMemoryDataService implements InMemoryDbService {
         sexo: 'M',
         email: 'pedro.almeida@email.com',
         telefone: '(11) 77777-7777',
-        dataCadastro: new Date('2024-02-01'),
-        ativo: true,
       },
       {
         id: 4,
@@ -45,8 +39,6 @@ export class InMemoryDataService implements InMemoryDbService {
         sexo: 'F',
         email: 'ana.rodrigues@email.com',
         telefone: '(11) 66666-6666',
-        dataCadastro: new Date('2024-02-10'),
-        ativo: true,
       },
       {
         id: 5,
@@ -55,8 +47,6 @@ export class InMemoryDataService implements InMemoryDbService {
         sexo: 'M',
         email: 'carlos.ferreira@email.com',
         telefone: '(11) 55555-5555',
-        dataCadastro: new Date('2024-02-15'),
-        ativo: true,
       },
       {
         id: 6,
@@ -65,8 +55,6 @@ export class InMemoryDataService implements InMemoryDbService {
         sexo: 'F',
         email: 'fernanda.santos@email.com',
         telefone: '(11) 44444-4444',
-        dataCadastro: new Date('2024-03-01'),
-        ativo: true,
       },
       {
         id: 7,
@@ -75,8 +63,6 @@ export class InMemoryDataService implements InMemoryDbService {
         sexo: 'M',
         email: 'roberto.costa@email.com',
         telefone: '(11) 33333-3333',
-        dataCadastro: new Date('2024-03-05'),
-        ativo: true,
       },
       {
         id: 8,
@@ -85,8 +71,6 @@ export class InMemoryDataService implements InMemoryDbService {
         sexo: 'F',
         email: 'juliana.lima@email.com',
         telefone: '(11) 22222-2222',
-        dataCadastro: new Date('2024-03-10'),
-        ativo: true,
       },
       {
         id: 9,
@@ -95,8 +79,6 @@ export class InMemoryDataService implements InMemoryDbService {
         sexo: 'M',
         email: 'lucas.martins@email.com',
         telefone: '(11) 11111-1111',
-        dataCadastro: new Date('2024-03-15'),
-        ativo: true,
       },
       {
         id: 10,
@@ -105,18 +87,14 @@ export class InMemoryDataService implements InMemoryDbService {
         sexo: 'F',
         email: 'camila.ferreira@email.com',
         telefone: '(11) 00000-0000',
-        dataCadastro: new Date('2024-03-20'),
-        ativo: true,
       },
       {
         id: 11,
-        nome: 'Alex Santos Silva',
+        nome: 'Maria João Silva',
         cpf: '159.357.486-00',
         sexo: 'O',
-        email: 'alex.santos@email.com',
+        email: 'maria.joao@email.com',
         telefone: '(11) 12345-6789',
-        dataCadastro: new Date('2024-03-25'),
-        ativo: true,
       },
     ];
 
