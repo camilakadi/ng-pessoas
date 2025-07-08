@@ -266,4 +266,59 @@ describe('PessoaConsultaComponent', () => {
 
     expect(erroContainer).toBeNull();
   });
+
+  describe('Error handling in buscarPessoaPorCPF', () => {
+    it('should set error message when pessoa not found (linha 134)', () => {
+      pessoaService.buscarPorCPF.mockReturnValue(of([]));
+
+      component.buscarPessoaPorCPF('999.999.999-99');
+
+      expect(component.erroConsulta).toBe(
+        'Pessoa não encontrada com o CPF informado.'
+      );
+      expect(component.pessoaEncontrada).toBeNull();
+    });
+
+    it('should set error message when service throws error (linha 151)', () => {
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+      pessoaService.buscarPorCPF.mockReturnValue(
+        throwError(() => new Error('Database connection failed'))
+      );
+
+      component.buscarPessoaPorCPF('123.456.789-02');
+
+      expect(component.erroConsulta).toBe(
+        'Erro ao buscar pessoa. Tente novamente.'
+      );
+      expect(component.pessoaEncontrada).toBeNull();
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Erro ao buscar pessoa:',
+        expect.any(Error)
+      );
+
+      consoleSpy.mockRestore();
+    });
+
+    it('should handle empty array response as pessoa not found', () => {
+      pessoaService.buscarPorCPF.mockReturnValue(of([]));
+
+      component.buscarPessoaPorCPF('000.000.000-00');
+
+      expect(component.erroConsulta).toBe(
+        'Pessoa não encontrada com o CPF informado.'
+      );
+      expect(component.pessoaEncontrada).toBeNull();
+    });
+
+    it('should handle null response as pessoa not found', () => {
+      pessoaService.buscarPorCPF.mockReturnValue(of(null as any));
+
+      component.buscarPessoaPorCPF('111.111.111-11');
+
+      expect(component.erroConsulta).toBe(
+        'Pessoa não encontrada com o CPF informado.'
+      );
+      expect(component.pessoaEncontrada).toBeNull();
+    });
+  });
 });

@@ -406,6 +406,103 @@ describe('PessoaFormModalComponent', () => {
       );
     }));
 
+    // Testes específicos para a linha 167 (tratamento de erro)
+    describe('Error handling in onSubmit (linha 167)', () => {
+      beforeEach(() => {
+        // Preencher o formulário com dados válidos
+        component.pessoaForm.patchValue({
+          nome: 'Camila Kadi',
+          cpf: '123.456.789-00',
+          sexo: 'F',
+          email: 'camila.kadi@email.com',
+          telefone: '(11) 99999-9999',
+        });
+      });
+
+      it('should show snackbar with error message when service fails (linha 167)', fakeAsync(() => {
+        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+        const networkError = new Error('Network connection failed');
+        mockPessoaService.criar.mockReturnValue(throwError(() => networkError));
+
+        component.onSubmit();
+        tick();
+
+        expect(component.loading).toBe(false);
+        expect(consoleSpy).toHaveBeenCalledWith(
+          'Erro ao cadastrar pessoa:',
+          networkError
+        );
+        expect(mockSnackBar.open).toHaveBeenCalledWith(
+          'Erro ao cadastrar pessoa.',
+          'Fechar',
+          { duration: 5000 }
+        );
+
+        consoleSpy.mockRestore();
+      }));
+
+      it('should handle different types of errors and show snackbar', fakeAsync(() => {
+        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+        const serverError = { status: 500, message: 'Internal Server Error' };
+        mockPessoaService.criar.mockReturnValue(throwError(() => serverError));
+
+        component.onSubmit();
+        tick();
+
+        expect(component.loading).toBe(false);
+        expect(consoleSpy).toHaveBeenCalledWith(
+          'Erro ao cadastrar pessoa:',
+          serverError
+        );
+        expect(mockSnackBar.open).toHaveBeenCalledWith(
+          'Erro ao cadastrar pessoa.',
+          'Fechar',
+          { duration: 5000 }
+        );
+
+        consoleSpy.mockRestore();
+      }));
+
+      it('should reset loading state when error occurs', fakeAsync(() => {
+        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+        mockPessoaService.criar.mockReturnValue(
+          throwError(() => new Error('Test error'))
+        );
+
+        component.onSubmit();
+
+        tick();
+
+        expect(component.loading).toBe(false);
+        expect(mockSnackBar.open).toHaveBeenCalledWith(
+          'Erro ao cadastrar pessoa.',
+          'Fechar',
+          { duration: 5000 }
+        );
+
+        consoleSpy.mockRestore();
+      }));
+
+      it('should not close dialog when error occurs', fakeAsync(() => {
+        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+        mockPessoaService.criar.mockReturnValue(
+          throwError(() => new Error('Test error'))
+        );
+
+        component.onSubmit();
+        tick();
+
+        expect(mockDialogRef.close).not.toHaveBeenCalled();
+        expect(mockSnackBar.open).toHaveBeenCalledWith(
+          'Erro ao cadastrar pessoa.',
+          'Fechar',
+          { duration: 5000 }
+        );
+
+        consoleSpy.mockRestore();
+      }));
+    });
+
     it('should set loading state during submission', fakeAsync(() => {
       // Garantir que o formulário seja válido
       component.pessoaForm.patchValue({
