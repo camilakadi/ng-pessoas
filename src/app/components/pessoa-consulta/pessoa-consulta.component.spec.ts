@@ -13,6 +13,7 @@ import { of, throwError } from 'rxjs';
 import { Pessoa } from '../../models/pessoa.model';
 import { PessoaService } from '../../services/pessoa.service';
 import { FormHeaderComponent } from '../form-header/form-header.component';
+import { PessoaFormModalComponent } from '../pessoa-form-modal/pessoa-form-modal.component';
 import { PessoaConsultaComponent } from './pessoa-consulta.component';
 
 describe('PessoaConsultaComponent', () => {
@@ -22,6 +23,15 @@ describe('PessoaConsultaComponent', () => {
 
   const mockPessoaService = {
     buscarPorCPF: jest.fn(),
+    cpfValidoValidator: jest.fn(),
+  };
+
+  const mockDialogService = {
+    open: jest.fn(),
+  };
+
+  const mockSnackBarService = {
+    open: jest.fn(),
   };
 
   const mockPessoa: Pessoa = {
@@ -50,6 +60,8 @@ describe('PessoaConsultaComponent', () => {
       ],
       providers: [
         { provide: PessoaService, useValue: mockPessoaService },
+        { provide: 'MatDialog', useValue: mockDialogService },
+        { provide: 'MatSnackBar', useValue: mockSnackBarService },
         provideRouter([]),
       ],
     }).compileComponents();
@@ -57,6 +69,10 @@ describe('PessoaConsultaComponent', () => {
     fixture = TestBed.createComponent(PessoaConsultaComponent);
     component = fixture.componentInstance;
     pessoaService = TestBed.inject(PessoaService) as jest.Mocked<PessoaService>;
+
+    // Mock do validador de CPF válido
+    pessoaService.cpfValidoValidator.mockReturnValue(() => null);
+
     fixture.detectChanges();
   });
 
@@ -141,6 +157,7 @@ describe('PessoaConsultaComponent', () => {
   });
 
   it('should handle service error', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
     pessoaService.buscarPorCPF.mockReturnValue(
       throwError(() => new Error('Network error'))
     );
@@ -151,6 +168,12 @@ describe('PessoaConsultaComponent', () => {
     expect(component.erroConsulta).toBe(
       'Erro ao buscar pessoa. Tente novamente.'
     );
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Erro ao buscar pessoa:',
+      expect.any(Error)
+    );
+
+    consoleSpy.mockRestore();
   });
 
   it('should reset form correctly', () => {
@@ -319,6 +342,142 @@ describe('PessoaConsultaComponent', () => {
         'Pessoa não encontrada com o CPF informado.'
       );
       expect(component.pessoaEncontrada).toBeNull();
+    });
+  });
+
+  describe('CPF validation', () => {
+    it('should include cpfValidoValidator in form', () => {
+      expect(pessoaService.cpfValidoValidator).toHaveBeenCalled();
+    });
+
+    it('should return correct error message for required field', () => {
+      const cpfControl = component.consultaForm.get('cpf');
+      cpfControl?.markAsTouched();
+
+      expect(component.getCPFErrorMessage()).toBe('CPF é obrigatório');
+    });
+
+    it('should return correct error message for pattern error', () => {
+      const cpfControl = component.consultaForm.get('cpf');
+      cpfControl?.setValue('12345678901');
+      cpfControl?.markAsTouched();
+
+      expect(component.getCPFErrorMessage()).toBe(
+        'CPF deve estar no formato 000.000.000-00'
+      );
+    });
+
+    it('should return correct error message for cpfInvalido error', () => {
+      const cpfControl = component.consultaForm.get('cpf');
+      cpfControl?.setErrors({ cpfInvalido: true });
+      cpfControl?.markAsTouched();
+
+      expect(component.getCPFErrorMessage()).toBe('CPF inválido');
+    });
+
+    it('should return empty string when no errors', () => {
+      const cpfControl = component.consultaForm.get('cpf');
+      cpfControl?.setValue('529.982.247-25');
+      cpfControl?.markAsTouched();
+
+      expect(component.getCPFErrorMessage()).toBe('');
+    });
+  });
+
+  describe('abrirModalCadastro', () => {
+    it('should open modal with correct data', () => {
+      const dialogRef = jest
+        .spyOn(component['dialog'], 'open')
+        .mockReturnValue({
+          afterClosed: () => of(null),
+        } as any);
+
+      component.abrirModalCadastro();
+
+      expect(dialogRef).toHaveBeenCalledWith(PessoaFormModalComponent, {
+        width: '600px',
+        maxWidth: '90vw',
+        disableClose: false,
+        data: {},
+      });
+    });
+
+    it('should show success message and reset form when modal returns success result', () => {
+      const mockResult = {
+        success: true,
+        pessoa: {
+          id: 2,
+          nome: 'João Silva',
+          cpf: '123.456.789-02',
+          sexo: 'M',
+          email: 'joao@email.com',
+          telefone: '(11) 88888-8888',
+        },
+      };
+
+      const mockDialogRef = {
+        afterClosed: () => of(mockResult),
+      };
+
+      jest
+        .spyOn(component['dialog'], 'open')
+        .mockReturnValue(mockDialogRef as any);
+      jest.spyOn(component['snackBar'], 'open').mockImplementation();
+      jest.spyOn(component, 'resetForm').mockImplementation();
+
+      component.abrirModalCadastro();
+
+      expect(component['snackBar'].open).toHaveBeenCalledWith(
+        'Pessoa João Silva com CPF 123.456.789-02 cadastrada com sucesso.',
+        'Fechar',
+        { duration: 5000 }
+      );
+      expect(component.resetForm).toHaveBeenCalled();
+    });
+
+    it('should not show success message when modal returns null result', () => {
+      const mockDialogRef = {
+        afterClosed: () => of(null),
+      };
+
+      jest
+        .spyOn(component['dialog'], 'open')
+        .mockReturnValue(mockDialogRef as any);
+      jest.spyOn(component['snackBar'], 'open').mockImplementation();
+      jest.spyOn(component, 'resetForm').mockImplementation();
+
+      component.abrirModalCadastro();
+
+      expect(component['snackBar'].open).not.toHaveBeenCalled();
+      expect(component.resetForm).not.toHaveBeenCalled();
+    });
+
+    it('should not show success message when modal returns result without success flag', () => {
+      const mockResult = {
+        pessoa: {
+          id: 2,
+          nome: 'João Silva',
+          cpf: '123.456.789-02',
+          sexo: 'M',
+          email: 'joao@email.com',
+          telefone: '(11) 88888-8888',
+        },
+      };
+
+      const mockDialogRef = {
+        afterClosed: () => of(mockResult),
+      };
+
+      jest
+        .spyOn(component['dialog'], 'open')
+        .mockReturnValue(mockDialogRef as any);
+      jest.spyOn(component['snackBar'], 'open').mockImplementation();
+      jest.spyOn(component, 'resetForm').mockImplementation();
+
+      component.abrirModalCadastro();
+
+      expect(component['snackBar'].open).not.toHaveBeenCalled();
+      expect(component.resetForm).not.toHaveBeenCalled();
     });
   });
 });

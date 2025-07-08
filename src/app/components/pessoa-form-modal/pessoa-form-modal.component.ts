@@ -72,6 +72,7 @@ export class PessoaFormModalComponent {
         [
           Validators.required,
           Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/),
+          this.pessoaService.cpfValidoValidator(),
         ],
         [this.pessoaService.cpfUnicoValidator()],
       ],
@@ -130,29 +131,41 @@ export class PessoaFormModalComponent {
 
   getErrorMessage(field: string): string {
     const control = this.pessoaForm.get(field);
+
     if (control?.hasError('required')) {
       return `${this.getFieldLabel(field)} é obrigatório`;
     }
+
     if (control?.hasError('email')) {
       return 'E-mail inválido';
     }
+
     if (control?.hasError('minlength')) {
       return `${this.getFieldLabel(field)} deve ter pelo menos 3 caracteres`;
     }
+
     if (control?.hasError('maxlength')) {
       return `${this.getFieldLabel(field)} deve ter no máximo 100 caracteres`;
     }
+
+    if (control?.hasError('cpfJaExiste')) {
+      return 'CPF já cadastrado no sistema';
+    }
+
+    if (control?.hasError('cpfInvalido')) {
+      return 'CPF inválido';
+    }
+
     if (control?.hasError('pattern')) {
       if (field === 'cpf') {
         return 'CPF deve estar no formato 000.000.000-00';
       }
+
       if (field === 'telefone') {
         return 'Telefone deve estar no formato (00) 00000-0000';
       }
     }
-    if (control?.hasError('cpfJaExiste')) {
-      return 'CPF já cadastrado no sistema';
-    }
+
     return '';
   }
 
@@ -164,7 +177,8 @@ export class PessoaFormModalComponent {
       email: 'E-mail',
       telefone: 'Telefone',
     };
-    return labels[field] || field;
+
+    return labels[field];
   }
 
   onCancel(): void {

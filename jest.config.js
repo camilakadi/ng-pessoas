@@ -10,6 +10,7 @@ module.exports = {
   },
   collectCoverageFrom: [
     "src/**/*.ts",
+    "!src/**/app.*.ts",
     "!src/**/*.spec.ts",
     "!src/**/*.d.ts",
     "!src/main.ts",

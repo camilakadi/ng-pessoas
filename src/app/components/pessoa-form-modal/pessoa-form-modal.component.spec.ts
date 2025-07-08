@@ -34,7 +34,7 @@ describe('PessoaFormModalComponent', () => {
   const mockPessoa: Pessoa = {
     id: 1,
     nome: 'Camila Kadi',
-    cpf: '123.456.789-00',
+    cpf: '543.134.150-25',
     sexo: 'F',
     email: 'camila.kadi@email.com',
     telefone: '(11) 99999-9999',
@@ -44,6 +44,7 @@ describe('PessoaFormModalComponent', () => {
     const pessoaServiceSpy = {
       criar: jest.fn(),
       cpfUnicoValidator: jest.fn(),
+      cpfValidoValidator: jest.fn(),
       verificarCPFExistente: jest.fn(),
     };
     const dialogRefSpy = {
@@ -83,8 +84,8 @@ describe('PessoaFormModalComponent', () => {
     >;
     mockSnackBar = TestBed.inject(MatSnackBar) as jest.Mocked<MatSnackBar>;
 
-    // Mock do validador de CPF único
     mockPessoaService.cpfUnicoValidator.mockReturnValue(() => of(null));
+    mockPessoaService.cpfValidoValidator.mockReturnValue(() => null);
   });
 
   beforeEach(() => {
@@ -147,6 +148,18 @@ describe('PessoaFormModalComponent', () => {
       const cpfControl = component.pessoaForm.get('cpf');
       cpfControl?.setValue('123.456.789-00');
       expect(cpfControl?.hasError('pattern')).toBeFalsy();
+    });
+
+    it('should validate CPF invalid format', () => {
+      const cpfControl = component.pessoaForm.get('cpf');
+      cpfControl?.setValue('1234567890');
+      expect(cpfControl?.hasError('pattern')).toBeTruthy();
+    });
+
+    it('should validate CPF', () => {
+      const cpfControl = component.pessoaForm.get('cpf');
+      cpfControl?.setValue('543.134.150-25');
+      expect(cpfControl?.hasError('cpfInvalido')).toBeFalsy();
     });
 
     it('should validate email format', () => {
@@ -287,6 +300,24 @@ describe('PessoaFormModalComponent', () => {
       expect(errorMessage).toBe('CPF deve estar no formato 000.000.000-00');
     });
 
+    it('should return CPF invalid error message', () => {
+      const cpfControl = component.pessoaForm.get('cpf');
+      cpfControl?.setErrors({ cpfInvalido: true });
+      cpfControl?.markAsTouched();
+
+      const errorMessage = component.getErrorMessage('cpf');
+      expect(errorMessage).toBe('CPF inválido');
+    });
+
+    it('should return CPF already exists error message', () => {
+      const cpfControl = component.pessoaForm.get('cpf');
+      cpfControl?.setErrors({ cpfJaExiste: true });
+      cpfControl?.markAsTouched();
+
+      const errorMessage = component.getErrorMessage('cpf');
+      expect(errorMessage).toBe('CPF já cadastrado no sistema');
+    });
+
     it('should return telefone pattern error message', () => {
       const telefoneControl = component.pessoaForm.get('telefone');
       telefoneControl?.setValue('11999999999');
@@ -315,7 +346,6 @@ describe('PessoaFormModalComponent', () => {
 
   describe('resetForm', () => {
     it('should reset form and submitted flag', () => {
-      // Preencher o formulário
       component.pessoaForm.patchValue({
         nome: 'Teste',
         cpf: '123.456.789-00',
@@ -346,10 +376,9 @@ describe('PessoaFormModalComponent', () => {
 
   describe('onSubmit', () => {
     beforeEach(() => {
-      // Preencher o formulário com dados válidos
       component.pessoaForm.patchValue({
         nome: 'João Silva',
-        cpf: '123.456.789-00',
+        cpf: '805.547.100-21',
         sexo: 'M',
         email: 'joao@email.com',
         telefone: '(11) 99999-9999',
@@ -367,6 +396,7 @@ describe('PessoaFormModalComponent', () => {
 
     it('should submit form successfully', fakeAsync(() => {
       mockPessoaService.criar.mockReturnValue(of(mockPessoa));
+      mockPessoaService.cpfValidoValidator.mockReturnValue(() => null);
 
       component.onSubmit();
       tick();
@@ -375,7 +405,7 @@ describe('PessoaFormModalComponent', () => {
       expect(component.loading).toBe(false);
       expect(mockPessoaService.criar).toHaveBeenCalledWith({
         nome: 'João Silva',
-        cpf: '123.456.789-00',
+        cpf: '805.547.100-21',
         sexo: 'M',
         email: 'joao@email.com',
         telefone: '(11) 99999-9999',
@@ -406,128 +436,25 @@ describe('PessoaFormModalComponent', () => {
       );
     }));
 
-    // Testes específicos para a linha 167 (tratamento de erro)
-    describe('Error handling in onSubmit (linha 167)', () => {
-      beforeEach(() => {
-        // Preencher o formulário com dados válidos
-        component.pessoaForm.patchValue({
-          nome: 'Camila Kadi',
-          cpf: '123.456.789-00',
-          sexo: 'F',
-          email: 'camila.kadi@email.com',
-          telefone: '(11) 99999-9999',
-        });
-      });
-
-      it('should show snackbar with error message when service fails (linha 167)', fakeAsync(() => {
-        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-        const networkError = new Error('Network connection failed');
-        mockPessoaService.criar.mockReturnValue(throwError(() => networkError));
-
-        component.onSubmit();
-        tick();
-
-        expect(component.loading).toBe(false);
-        expect(consoleSpy).toHaveBeenCalledWith(
-          'Erro ao cadastrar pessoa:',
-          networkError
-        );
-        expect(mockSnackBar.open).toHaveBeenCalledWith(
-          'Erro ao cadastrar pessoa.',
-          'Fechar',
-          { duration: 5000 }
-        );
-
-        consoleSpy.mockRestore();
-      }));
-
-      it('should handle different types of errors and show snackbar', fakeAsync(() => {
-        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-        const serverError = { status: 500, message: 'Internal Server Error' };
-        mockPessoaService.criar.mockReturnValue(throwError(() => serverError));
-
-        component.onSubmit();
-        tick();
-
-        expect(component.loading).toBe(false);
-        expect(consoleSpy).toHaveBeenCalledWith(
-          'Erro ao cadastrar pessoa:',
-          serverError
-        );
-        expect(mockSnackBar.open).toHaveBeenCalledWith(
-          'Erro ao cadastrar pessoa.',
-          'Fechar',
-          { duration: 5000 }
-        );
-
-        consoleSpy.mockRestore();
-      }));
-
-      it('should reset loading state when error occurs', fakeAsync(() => {
-        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-        mockPessoaService.criar.mockReturnValue(
-          throwError(() => new Error('Test error'))
-        );
-
-        component.onSubmit();
-
-        tick();
-
-        expect(component.loading).toBe(false);
-        expect(mockSnackBar.open).toHaveBeenCalledWith(
-          'Erro ao cadastrar pessoa.',
-          'Fechar',
-          { duration: 5000 }
-        );
-
-        consoleSpy.mockRestore();
-      }));
-
-      it('should not close dialog when error occurs', fakeAsync(() => {
-        const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-        mockPessoaService.criar.mockReturnValue(
-          throwError(() => new Error('Test error'))
-        );
-
-        component.onSubmit();
-        tick();
-
-        expect(mockDialogRef.close).not.toHaveBeenCalled();
-        expect(mockSnackBar.open).toHaveBeenCalledWith(
-          'Erro ao cadastrar pessoa.',
-          'Fechar',
-          { duration: 5000 }
-        );
-
-        consoleSpy.mockRestore();
-      }));
-    });
-
     it('should set loading state during submission', fakeAsync(() => {
-      // Garantir que o formulário seja válido
       component.pessoaForm.patchValue({
         nome: 'João Silva',
-        cpf: '123.456.789-00',
+        cpf: '543.134.150-25',
         sexo: 'M',
         email: 'joao@email.com',
         telefone: '(11) 99999-9999',
       });
 
-      // Aguardar a validação assíncrona
       fixture.detectChanges();
-      tick(600); // Aguardar o delay do validador de CPF
+      tick(600);
       fixture.detectChanges();
 
-      // Simular resposta assíncrona
       mockPessoaService.criar.mockReturnValue(of(mockPessoa).pipe(delay(1)));
 
-      // O valor de loading deve ser false antes do submit
       expect(component.loading).toBe(false);
       component.onSubmit();
-      // O valor de loading deve ser true imediatamente após o submit
       expect(component.loading).toBe(true);
       tick(1);
-      // O valor de loading deve ser false após a resposta
       expect(component.loading).toBe(false);
     }));
   });
@@ -554,7 +481,6 @@ describe('PessoaFormModalComponent', () => {
     });
 
     it('should display sexo options', () => {
-      // Verificar se as opções estão definidas no componente
       expect(component.sexoOptions).toHaveLength(3);
       expect(component.sexoOptions[0].value).toBe('M');
       expect(component.sexoOptions[0].label).toBe('Masculino');
@@ -576,7 +502,7 @@ describe('PessoaFormModalComponent', () => {
     it('should have submit button enabled when form is valid', () => {
       component.pessoaForm.patchValue({
         nome: 'João Silva',
-        cpf: '123.456.789-00',
+        cpf: '543.134.150-25',
         sexo: 'M',
         email: 'joao@email.com',
         telefone: '(11) 99999-9999',

@@ -71,6 +71,7 @@ export class PessoaConsultaComponent implements OnInit {
         [
           Validators.required,
           Validators.pattern(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/),
+          this.pessoaService.cpfValidoValidator(),
         ],
       ],
     });
@@ -151,5 +152,31 @@ export class PessoaConsultaComponent implements OnInit {
         this.resetForm();
       }
     });
+  }
+
+  getErrorMessage(field: string): string {
+    const control = this.consultaForm.get(field);
+
+    if (control?.hasError('required')) {
+      return `${this.getFieldLabel(field)} é obrigatório`;
+    }
+    if (control?.hasError('pattern')) {
+      return `${this.getFieldLabel(
+        field
+      )} deve estar no formato 000.000.000-00`;
+    }
+    if (control?.hasError('cpfInvalido')) {
+      return `${this.getFieldLabel(field)} inválido`;
+    }
+
+    return '';
+  }
+
+  private getFieldLabel(field: string): string {
+    const labels: { [key: string]: string } = {
+      cpf: 'CPF',
+    };
+
+    return labels[field];
   }
 }

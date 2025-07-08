@@ -11,7 +11,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 1,
         nome: 'Camila Kadi',
-        cpf: '123.456.789-00',
+        cpf: '543.134.150-25',
         sexo: 'F',
         email: 'camila.kadi@email.com',
         telefone: '(11) 99999-9999',
@@ -19,7 +19,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 2,
         nome: 'Matheus Moreira',
-        cpf: '987.654.321-00',
+        cpf: '611.129.480-66',
         sexo: 'M',
         email: 'matheus.moreira@email.com',
         telefone: '(11) 88888-8888',
@@ -27,7 +27,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 3,
         nome: 'Pedro Almeida Lima',
-        cpf: '456.789.123-00',
+        cpf: '587.683.400-95',
         sexo: 'M',
         email: 'pedro.almeida@email.com',
         telefone: '(11) 77777-7777',
@@ -35,7 +35,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 4,
         nome: 'Ana Paula Rodrigues',
-        cpf: '789.123.456-00',
+        cpf: '913.362.490-99',
         sexo: 'F',
         email: 'ana.rodrigues@email.com',
         telefone: '(11) 66666-6666',
@@ -43,7 +43,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 5,
         nome: 'Carlos Eduardo Ferreira',
-        cpf: '321.654.987-00',
+        cpf: '587.211.110-06',
         sexo: 'M',
         email: 'carlos.ferreira@email.com',
         telefone: '(11) 55555-5555',
@@ -51,7 +51,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 6,
         nome: 'Fernanda Santos Silva',
-        cpf: '654.321.987-00',
+        cpf: '606.402.750-95',
         sexo: 'F',
         email: 'fernanda.santos@email.com',
         telefone: '(11) 44444-4444',
@@ -59,7 +59,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 7,
         nome: 'Roberto Costa Oliveira',
-        cpf: '147.258.369-00',
+        cpf: '893.318.510-06',
         sexo: 'M',
         email: 'roberto.costa@email.com',
         telefone: '(11) 33333-3333',
@@ -67,7 +67,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 8,
         nome: 'Juliana Lima Almeida',
-        cpf: '258.369.147-00',
+        cpf: '391.716.320-93',
         sexo: 'F',
         email: 'juliana.lima@email.com',
         telefone: '(11) 22222-2222',
@@ -75,7 +75,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 9,
         nome: 'Lucas Martins Pereira',
-        cpf: '369.147.258-00',
+        cpf: '355.813.540-73',
         sexo: 'M',
         email: 'lucas.martins@email.com',
         telefone: '(11) 11111-1111',
@@ -83,7 +83,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 10,
         nome: 'Camila Ferreira Santos',
-        cpf: '951.753.852-00',
+        cpf: '529.774.060-69',
         sexo: 'F',
         email: 'camila.ferreira@email.com',
         telefone: '(11) 00000-0000',
@@ -91,7 +91,7 @@ export class InMemoryDataService implements InMemoryDbService {
       {
         id: 11,
         nome: 'Maria João Silva',
-        cpf: '159.357.486-00',
+        cpf: '135.558.640-25',
         sexo: 'O',
         email: 'maria.joao@email.com',
         telefone: '(11) 12345-6789',

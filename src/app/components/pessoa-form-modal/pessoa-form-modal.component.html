@@ -32,23 +32,9 @@
         <mat-icon matSuffix>person</mat-icon>
         <mat-error
           *ngIf="
-            pessoaForm.get('nome')?.hasError('required') &&
-            pessoaForm.get('nome')?.touched
-          "
-        >
-          {{ getErrorMessage("nome") }}
-        </mat-error>
-        <mat-error
-          *ngIf="
-            pessoaForm.get('nome')?.hasError('minlength') &&
-            pessoaForm.get('nome')?.touched
-          "
-        >
-          {{ getErrorMessage("nome") }}
-        </mat-error>
-        <mat-error
-          *ngIf="
-            pessoaForm.get('nome')?.hasError('maxlength') &&
+            (pessoaForm.get('nome')?.hasError('required') ||
+              pessoaForm.get('nome')?.hasError('minlength') ||
+              pessoaForm.get('nome')?.hasError('maxlength')) &&
             pessoaForm.get('nome')?.touched
           "
         >
@@ -70,23 +56,10 @@
         <mat-icon matSuffix>badge</mat-icon>
         <mat-error
           *ngIf="
-            pessoaForm.get('cpf')?.hasError('required') &&
-            pessoaForm.get('cpf')?.touched
-          "
-        >
-          {{ getErrorMessage("cpf") }}
-        </mat-error>
-        <mat-error
-          *ngIf="
-            pessoaForm.get('cpf')?.hasError('pattern') &&
-            pessoaForm.get('cpf')?.touched
-          "
-        >
-          {{ getErrorMessage("cpf") }}
-        </mat-error>
-        <mat-error
-          *ngIf="
-            pessoaForm.get('cpf')?.hasError('cpfJaExiste') &&
+            (pessoaForm.get('cpf')?.hasError('required') ||
+              pessoaForm.get('cpf')?.hasError('pattern') ||
+              pessoaForm.get('cpf')?.hasError('cpfInvalido') ||
+              pessoaForm.get('cpf')?.hasError('cpfJaExiste')) &&
             pessoaForm.get('cpf')?.touched
           "
         >
@@ -97,8 +70,11 @@
       <!-- Campo Sexo -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Sexo</mat-label>
-        <mat-select formControlName="sexo" required>
-          <mat-option value="">Selecione o sexo</mat-option>
+        <mat-select
+          formControlName="sexo"
+          placeholder="Selecione o sexo"
+          required
+        >
           <mat-option *ngFor="let option of sexoOptions" [value]="option.value">
             {{ option.label }}
           </mat-option>
@@ -127,15 +103,8 @@
         <mat-icon matSuffix>email</mat-icon>
         <mat-error
           *ngIf="
-            pessoaForm.get('email')?.hasError('required') &&
-            pessoaForm.get('email')?.touched
-          "
-        >
-          {{ getErrorMessage("email") }}
-        </mat-error>
-        <mat-error
-          *ngIf="
-            pessoaForm.get('email')?.hasError('email') &&
+            (pessoaForm.get('email')?.hasError('required') ||
+              pessoaForm.get('email')?.hasError('email')) &&
             pessoaForm.get('email')?.touched
           "
         >
@@ -157,15 +126,8 @@
         <mat-icon matSuffix>phone</mat-icon>
         <mat-error
           *ngIf="
-            pessoaForm.get('telefone')?.hasError('required') &&
-            pessoaForm.get('telefone')?.touched
-          "
-        >
-          {{ getErrorMessage("telefone") }}
-        </mat-error>
-        <mat-error
-          *ngIf="
-            pessoaForm.get('telefone')?.hasError('pattern') &&
+            (pessoaForm.get('telefone')?.hasError('required') ||
+              pessoaForm.get('telefone')?.hasError('pattern')) &&
             pessoaForm.get('telefone')?.touched
           "
         >

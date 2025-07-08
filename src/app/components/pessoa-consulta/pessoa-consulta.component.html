@@ -27,19 +27,13 @@
           <mat-icon matSuffix class="cpf-icon">badge</mat-icon>
           <mat-error
             *ngIf="
-              consultaForm.get('cpf')?.hasError('required') &&
+              (consultaForm.get('cpf')?.hasError('required') ||
+                consultaForm.get('cpf')?.hasError('pattern') ||
+                consultaForm.get('cpf')?.hasError('cpfInvalido')) &&
               consultaForm.get('cpf')?.touched
             "
           >
-            CPF é obrigatório
-          </mat-error>
-          <mat-error
-            *ngIf="
-              consultaForm.get('cpf')?.hasError('pattern') &&
-              consultaForm.get('cpf')?.touched
-            "
-          >
-            CPF deve estar no formato 000.000.000-00
+            {{ getErrorMessage("cpf") }}
           </mat-error>
         </mat-form-field>
 

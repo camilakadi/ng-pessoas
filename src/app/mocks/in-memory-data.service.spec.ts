@@ -112,7 +112,7 @@ describe('InMemoryDataService', () => {
 
       expect(camilaKadi).toBeDefined();
       expect(camilaKadi?.id).toBe(1);
-      expect(camilaKadi?.cpf).toBe('123.456.789-00');
+      expect(camilaKadi?.cpf).toBe('543.134.150-25');
       expect(camilaKadi?.sexo).toBe('F');
       expect(camilaKadi?.email).toBe('camila.kadi@email.com');
       expect(camilaKadi?.telefone).toBe('(11) 99999-9999');
