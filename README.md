@@ -52,7 +52,7 @@ O NgPessoas é uma aplicação web para cadastro e consulta de pessoas, desenvol
 ### 1. Clone o repositório
 
 ```bash
-git clone <https://github.com/camilakadi/ng-pessoas.git>
+git clone https://github.com/camilakadi/ng-pessoas.git
 cd ng-pessoas
 ```
 
